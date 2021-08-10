@@ -5,14 +5,98 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fetch</title>
+
+  <style>
+    *, *::after, *::before{
+      box-sizing: border-box;
+
+    } 
+    body {
+      margin: 0;
+      padding: 0
+    }
+    .container{
+      
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .btn {
+      display:block;
+      flex-direction:column;
+      padding: 10px;
+      justify-content:space-between;
+      outline: none;      
+    }
+    .btn >button{
+      margin: 20px;
+      padding: 10px;
+      border: none;
+      
+    }
+    .btn #getText{
+      background: rgb(128, 143, 169);
+    }
+    .cont {
+      display: flex;
+      margin-left: 200px;
+      align-content: center;
+    }
+    
+
+    #JSON{
+      padding-left: 50px;
+   }
+  </style>
 </head>
 <body>
-  <button id="getText">Get Text</button>
+
+<div class="container">
+  <div class="btn">
+  
+    <button id="getText">Get Text</button>
+    <button id="getJSON">Get JSON</button>
+  </div>
+    <br><br><br>
+  
+    <div class="cont">
+      <div id="output"></div>
+      <br><br><br>
+      <div id="JSON"></div>
+    </div>
+</div>
   <script>
     document.getElementById('getText').addEventListener('click', getText);
-    function getText() {
-      fetch('sample.txt').then(res => text())
-    }
+    document.getElementById('getJSON').addEventListener('click', getJSON);
+
+   function getText() {
+     fetch('sample.txt')
+     
+     .then(res => res.text())
+     .then(data => {
+      document.getElementById('output').innerHTML = data
+     })
+     .catch(err => console.log(err) )
+   }
+    
+
+   function getJSON() {
+     fetch('user.json')
+     .then(res => res.json())
+     .then(data => {
+       let output = ''
+       data.forEach((u) =>{
+        output += `<li>ID: ${u.id}</li> 
+        <li>NAME: ${u.name}</li>
+        <li>EMAIL: ${u.email}</li>
+        <br><br><br>
+        `
+       })
+
+       document.getElementById('JSON').innerHTML = output
+     }).catch(err => console.log(err))
+   }
   </script>
 </body>
 </html>
